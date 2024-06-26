@@ -1,17 +1,17 @@
 local icons = require('nvim-web-devicons')
 local conditions = require('heirline.conditions')
 local utils = require('heirline.utils')
-
+local bufutils = require('util.buffers')
 
 local space = {
   provider = ' '
 }
 
 local bufnr = {
-    provider = function(self)
-        return tostring(self.bufnr) .. ')'
-    end,
-    hl = "Comment",
+  provider = function(self)
+    return tostring(self.bufnr) .. ')'
+  end,
+  hl = "Comment",
 }
 
 local fileicon = {
@@ -28,12 +28,10 @@ local fileicon = {
 }
 
 local filename = {
-  init = function(self)
-    local path = vim.api.nvim_buf_get_name(self.bufnr)
-    self.filename = vim.fn.fnamemodify(path, ':t')
-    if self.filename == '' then self.filename = '[No Name]' end
-  end,
   provider = function(self)
+    if self.filename == '' then
+      return 'Untitled'
+    end
     return self.filename
   end
 }
@@ -55,21 +53,73 @@ local sep = {
   provider = "│"
 }
 
+local unique_path = {
+  provider = function(self)
+    local sep = ''
+    local ret = ''
+    local depth = 0
+    local path_parts = nil
+    local num_parts = 0
+    for  _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_loaded(bufnr) then
+        local other_filename = bufutils.filename(bufnr)
+        if other_filename ~= '' and other_filename == self.filename and bufnr ~= self.bufnr then
+          if path_parts == nil then
+            path_parts = bufutils.path_parts(self.bufnr)
+            num_parts = #path_parts
+          end
+          local other = bufutils.path_parts(bufnr)
+          for i = 1, num_parts do
+            if path_parts[num_parts - i + 1] ~= other[num_parts - i + 1] then
+              depth = math.max(i, depth)
+              break
+            end
+          end
+        end
+      end
+    end
+    for i = 1, depth do
+      ret = ret .. path_parts[num_parts + i - depth] .. sep
+    end
+    return ret
+  end,
+  hl = 'Comment'
+}
+
 local buffer = {
+  init = function(self)
+    self.filename = bufutils.filename(self.bufnr)
+  end,
   condition = function()
     return true
   end,
-  bufnr,
-  space,
+  hl = function(self)
+    if self.is_active then
+      return 'TabLineSel'
+    else
+      return 'TabLine'
+    end
+  end,
+  --  bufnr,
+  --  space,
   fileicon,
   space,
+  unique_path,
   filename,
   space,
   close,
-  sep,
 }
 
 return {
-  sep,
-  utils.make_buflist(buffer)
+  utils.make_buflist(buffer,
+    {
+      provider = '',
+    },
+    {
+      provider = '',
+    },
+    function()
+      return bufutils.buffers(vim.api.nvim_get_current_win())
+    end
+  ),
 }

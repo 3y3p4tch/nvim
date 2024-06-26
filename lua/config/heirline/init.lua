@@ -4,9 +4,7 @@ return {
   --statuscolumn = require('config.heirline.statuscolumn'),
   opts = {
     disable_winbar_cb = function(args)
-      return require('heirline.conditions').buffer_matches({
-        buftype = { 'nofile', 'prompt', 'help', 'quickfix', 'terminal' },
-      }, args.buf)
+      return require('util.buffers').invalid_buffer(args.buf)
     end
   }
 }

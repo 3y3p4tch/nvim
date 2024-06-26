@@ -3,6 +3,9 @@ vim.opt.encoding = 'UTF-8'
 -- Highlight current line where the cursor is
 vim.opt.cursorline = true
 
+-- enable system clipboard instead of using '*' and '+'
+vim.opt.clipboard:append("unnamedplus")
+
 -- Indenting vim.options
 vim.opt.expandtab = true        -- Use spaces instead of tabs
 vim.opt.shiftwidth = 2          -- Number of spaces for each indentation level
