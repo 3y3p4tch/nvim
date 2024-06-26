@@ -31,6 +31,8 @@ vim.opt.termguicolors = true
 -- set leader to space
 vim.g.mapleader = ' '
 
+vim.g.mousemoveevent = true
+
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

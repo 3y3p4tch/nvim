@@ -20,6 +20,8 @@ map(n, '<s-tab>', '<CMD>bprev<CR>')
 -- nvim-tree
 map(all, '<c-b>', '<CMD>NvimTreeToggle<CR>')
 -- telescope
-map(all, '<c-p>', '<CMD>Telescope find_files<CR>')
+map(all, '<c-p>', '<CMD>Telescope frecency workspace=CWD<CR>')
 map(all, '<c-f>', '<CMD>Telescope current_buffer_fuzzy_find previewer=false<CR>')
 map(all, '<c-s-f>', '<CMD>Telescope live_grep<CR>')
+-- terminal
+map(all, '<c-`>', '<CMD>ToggleTerm<CR>')

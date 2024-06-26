@@ -13,6 +13,7 @@ return {
         filetypes = {
             'help',
             'terminal',
+            'dashboard',
             'lazy',
             'lspinfo',
             'TelescopePrompt',

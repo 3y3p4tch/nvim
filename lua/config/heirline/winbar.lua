@@ -1,6 +1,7 @@
 local icons = require('nvim-web-devicons')
 local conditions = require('heirline.conditions')
 local utils = require('heirline.utils')
+local winbar = require('config.ui.winbar')
 local bufutils = require('util.buffers')
 
 local space = {
@@ -11,12 +12,12 @@ local bufnr = {
   provider = function(self)
     return tostring(self.bufnr) .. ')'
   end,
-  hl = "Comment",
+  hl = 'Comment',
 }
 
 local fileicon = {
   init = function(self)
-    local filetype = vim.api.nvim_buf_get_option(self.bufnr, "filetype")
+    local filetype = vim.api.nvim_buf_get_option(self.bufnr, 'filetype')
     self.icon, self.icon_hl = icons.get_icon_by_filetype(filetype)
   end,
   provider = function(self)
@@ -117,9 +118,9 @@ return {
     },
     {
       provider = '',
-    },
-    function()
-      return bufutils.buffers(vim.api.nvim_get_current_win())
-    end
+    }
+--    function()
+--      return winbar.buffers(vim.api.nvim_get_current_win())
+--    end
   ),
 }

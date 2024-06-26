@@ -19,7 +19,5 @@ return {
     'saadparwaiz1/cmp_luasnip',
     -- for symbols on completion
     'onsails/lspkind.nvim',
-    -- insert braces for functions and likes
-    'windwp/nvim-autopairs'
   }
 }
